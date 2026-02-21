@@ -1,0 +1,155 @@
+---
+title: "01_simulate_data"
+output: html_document
+date: "2026-02-21"
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Preámbulo
+
+En este código vamos a simular datos sobre:
+
+-   Nombres de personas
+
+<!-- -->
+
+-   Horas de sueño
+
+-   Cuantos minutos antes de dormir las personas dejan de ver sus
+    celulares
+
+**Nota**: Este proceso generador de datos esta diseñado para mostrar una
+correlación positiva entre el número de horas de sueño y cuantos minutos
+antes de dormir dejan de ver las personas su celular. En este caso una
+persona que deja de ver su celular 60 minutos antes de dormir tendrá más
+horas de sueño que una persona que deja de ver su celular 10 minutos
+antes de dormir.
+
+## Alistar ambiente de trabajo
+
+### 1. Limpiar ambiente de trabajo y borrar consola
+
+```{r pressure, echo=FALSE}
+rm(list = ls())
+cat("\014")
+
+```
+
+### 2. Cargar paquetes necesarios
+
+Para correr este chunk es necesario tener descargada la librería pacman
+
+```{r}
+
+library(pacman)
+
+p_load(
+  tidyverse, #Análisis de datos
+  randomNames #Crear nombres aleatorios
+) 
+
+
+```
+
+## Simular los datos 
+
+### 0. Definir la semilla 
+
+Definimos una semilla para que sea posible recrear el mismo proceso
+aleatorio que obtuvimos y por ende los resultados
+
+```{r}
+set.seed(123)
+```
+
+### 1. Simular los nombres 
+
+Para esto usamos la función *randomNames* del paquete con el mismo
+nombre.
+
+```{r}
+nombres <- randomNames(n = 30,
+                       ethnicity = 4, # ethnicity = 4 corresponde a etnia hispana
+                       name.order = "first.last", 
+                       name.sep = " ")
+
+```
+
+### 2. Simular horas de sueño 
+
+La función *sample* usa de manera predeterminada una distribución
+uniforme. A partir de esta distribución seleciona números dentro del
+intervalo especificado [4-8].
+
+-   8 horas de sueño. Lo recomendable para una persona
+
+-   4 horas de sueño. Muy pocas horas de sueño para las mayoría de las
+    personas
+
+```{r}
+hrs_sueno <- sample(4:8, 30, replace = TRUE)
+```
+
+### 3. Simular cuantos minutos antes de dormir las personas dejan de ver sus celulares 
+
+En este caso para las personas con más horas de sueño decimos que dejan
+de ver su celular más minutosd antes de dormir. Como reglas general (más
+horas de sueño) -\> (dejan de ver su celular más minutos antes de dormir
+
+```{r}
+#Lista para guardar las observaciones 
+min_soltar_cel <- c() 
+
+#Agregar las observaciones 
+for (hrs in hrs_sueno) {
+  if (hrs == 8) {
+    min_soltar_cel <- c(min_soltar_cel, 60)
+  } else if (hrs == 7) {
+    min_soltar_cel <- c(min_soltar_cel, 50)
+  } else if (hrs == 6) {
+    min_soltar_cel <- c(min_soltar_cel, 30)
+  } else if (hrs == 5) {
+    min_soltar_cel <- c(min_soltar_cel, 20)
+  } else if (hrs == 4) {
+    min_soltar_cel <- c(min_soltar_cel, 10)
+  }
+}
+
+```
+
+### 4. Simular missings values 
+
+Esto lo hacemos para que los datos se asemejen a los datos que se
+encuentran en promedio, que se generan a partir de un proceso natural.
+
+```{r}
+hrs_sueno[[15]] <- NA
+min_soltar_cel[[30]] <- NA
+```
+
+### 5. Consolidar la tabla de datos
+
+Agregamos todas las variables simuladas para generar la tabla de datos
+
+```{r}
+raw_sleep_data <- data.frame(
+  Nombres = nombres, 
+  Horas_sueno = hrs_sueno, 
+  Minutos_soltar_cel = min_soltar_cel
+)
+
+```
+
+## Guardamos los datos simulados
+
+Estos datos simulados son los datos crudos de nuestros proyecto.
+
+**Nota**: Para que las rutas relativas funcionen correctamente es
+necesario haber abierto el proyecto GPI-workshop4
+
+```{r}
+saveRDS(raw_sleep_data, paste0("datos", "/", "raw", "/", "raw_sleep_data.rds"))
+
+```
