@@ -15,7 +15,6 @@ En este código vamos a limpiar y ha procesar los datos **raw_sleep_data.rds**, 
 ### 1. Limpiar ambiente y borrar consola
 
 ```{r}
-rm(list = ls())
 cat("\014")
 ```
 
@@ -84,20 +83,20 @@ raw_sleep_data <- raw_sleep_data %>%
                   mutate(minutos_soltar_cel = as.integer(minutos_soltar_cel))
 ```
 
-## Limpiar datos 
+## Limpiar datos
 
 vamos a:
 
 1.  Revisar valores faltantes
 2.  Revisar la coherencia de los datos. En esta caso, vamos a verificar que no haya tiempos negativos para las variables **horas_sueno** y **minutos_soltar_cel.**
 
-### 1. Estadísticas descriptivas para revisar NA y coherencia 
+### 1. Estadísticas descriptivas para revisar NA y coherencia
 
 ```{r}
 print(skim(raw_sleep_data))
 ```
 
-#### 1.1 Remover missing values 
+#### 1.1 Remover missing values
 
 A partir de las estadísticas descriptivas pudimos identificar que hay dos valores faltantes. Uno para la variable **horas_sueno** y otro para la variable **minutos_soltar_cel.** En este caso como tenemos pocas observaciones y tenemos planeado hacer una análisis descriptivo vamos a remover estos valores faltantes de la tabla de datos.
 
@@ -106,11 +105,11 @@ raw_sleep_data <- na.omit(raw_sleep_data) #Remover NA
 nrow(raw_sleep_data) #Revisar que solo se hayan removida dos observaciones
 ```
 
-#### 1.2 Revisar la coherencia de los datos 
+#### 1.2 Revisar la coherencia de los datos
 
 A partir de las estadísticas descriptivas pudimos identificar que no hay tiempos negativos para las variables **horas_sueno** y **minutos_soltar_cel.** Esto indica que nuestras variables no presentan incoherencias lógicas.
 
-## Guardar los datos limpios 
+## Guardar los datos limpios
 
 ```{r}
 saveRDS(raw_sleep_data, here("datos", "clean", "clean_sleep_data.rds"))

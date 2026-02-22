@@ -15,7 +15,6 @@ En este código vamos a hacer un breve análisis descriptivo para ver la relaci�
 ### 1. Limpiar ambiente y borrar consola
 
 ```{r}
-rm(list = ls())
 cat("\014")
 ```
 
@@ -69,7 +68,7 @@ scatter_plot_sueno <- ggplot(
   theme_minimal(base_size = 12)
 
 #Ver el gráfico 
-print(scatter_plot)
+print(scatter_plot_sueno)
 
 #Guardar el gráfico
 ggsave(
