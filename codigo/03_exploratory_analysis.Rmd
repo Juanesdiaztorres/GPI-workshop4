@@ -1,0 +1,83 @@
+---
+title: "03_exploratory_analysis"
+output: html_document
+date: "2026-02-22"
+---
+
+## Preámbulo
+
+En este código vamos a hacer un breve análisis descriptivo para ver la relación entre los horas de sueño y cuantos minutos dejan de ver su celular las personas antes de dormir.
+
+**Nota**: Para que las rutas relativas funcionen correctamente es necesario haber abierto el proyecto GPI-workshop4
+
+## Alistar ambiente de trabajo
+
+### 1. Limpiar ambiente y borrar consola
+
+```{r}
+rm(list = ls())
+cat("\014")
+```
+
+### 2. Cargar paquetes necesarios
+
+-   Para correr este chunk es necesario tener descargada la librería *pacman.*
+
+-   Para hacer los gráficos vamos usar el paquete *ggplot2*, que hace parte de la librería *tidyverse*
+
+```{r, echo=FALSE}
+library("pacman")
+p_load(
+  tidyverse, #Organización y limpieza
+  skimr, #Estadísitcas descriptivas detalldas
+  here #Manejar rutas relativas
+)
+
+```
+
+### 3. Cargar datos limpios
+
+```{r}
+clean_sleep_data <- readRDS(here("datos", "clean", "clean_sleep_data.rds"))
+```
+
+## Análisis descriptivo
+
+Vamos a ver la correlación entre los horas de sueño y cuantos minutos antes de dormir dejan de ver las personas su celular
+
+### 1. Gráfica de dispersión (scatter)
+
+Primero vamos a hacer el gráfico
+
+```{r}
+
+#Hacer el gráfico
+scatter_plot_sueno <- ggplot(
+  clean_sleep_data,
+  aes(x = minutos_soltar_cel, y = horas_sueno)
+) +
+  geom_point(size = 2, alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  labs(
+    title = "Uso del celular antes de dormir y horas de sueño",
+    subtitle = "Relación lineal entre minutos de uso del celular antes dormir y la cantidad de horas de sueño",
+    x = "Cuantos minutos antes de dormir dejo de ver el celular",
+    y = "Horas de sueño"
+  ) +
+  theme_minimal(base_size = 12)
+
+#Ver el gráfico 
+print(scatter_plot)
+
+#Guardar el gráfico
+ggsave(
+  filename = here("resultados", "scatter_plot.png"),
+  plot = scatter_plot_sueno,
+  width = 8,
+  height = 6,
+  units = "in",
+  dpi = 300
+)
+
+
+```
