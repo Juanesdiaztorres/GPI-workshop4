@@ -1,0 +1,117 @@
+---
+title: "02_processing_and_cleaning_data"
+output: html_document
+date: "2026-02-22"
+---
+
+## Preámbulo
+
+En este código vamos a limpiar y ha procesar los datos **raw_sleep_data.rds**, que fueron simulados en el *script 01_simulate_data.Rmd*
+
+**Nota**: Para que las rutas relativas funcionen correctamente es necesario haber abierto el proyecto GPI-workshop4
+
+## Alistar ambiente de trabajo
+
+### 1. Limpiar ambiente y borrar consola
+
+```{r}
+rm(list = ls())
+cat("\014")
+```
+
+### 2. Cargar paquetes necesarios
+
+Para correr este chunk es necesario tener descargada la librería *pacman*
+
+```{r, echo=FALSE}
+library("pacman")
+p_load(
+  tidyverse, #Organización y limpieza
+  skimr, #Estadísitcas descriptivas detalldas
+  here #Manejar rutas relativas
+)
+
+```
+
+### 3. Cargar datos crudos
+
+-   **Dimensión de la tabla:** 30 observaciones y 3 variables
+
+-   **Variables**:
+
+    -   **nombres**: nombres de las personas (el tipo de esta variable debería ser *str*)
+
+    -   **horas_sueno**: número de horas que las personas reportaron dormir (el tipo de esta variable debería ser *int*)
+
+    -   **minutos_soltar_cel**: cuantos minutos antes de dormir las personas dejan de usar su celular (el tipo de esta variable debería ser *int*)
+
+**Recordatorio**: Estos datos fueron simulados a partir de scrip *01_simulate_data*
+
+```{r}
+raw_sleep_data <- readRDS(here("datos", "raw", "raw_sleep_data.rds"))
+
+```
+
+## Procesar datos
+
+Vamos a:
+
+1.  Revisar el tipo de las variables y que estos correspodan con los tipos que identificamos en la sección anterior.
+2.  Si es necesario vamos a ajustar los tipos de las variables que lo requieran.
+
+### 1. Revisar el tipo de las variables
+
+```{r}
+#(a) Nombres de las variables
+var_names <- colnames(raw_sleep_data)
+
+#(b) Revisar el tipo de las variables 
+for(variable in var_names){
+  
+  #Ver el tipo de cada variable
+  cat(paste0("El tipo de la variable ", variable, " es:"))
+  print(class(raw_sleep_data[[variable]]))
+}
+
+```
+
+### 2. Ajustar tipos de variables
+
+La variable **minutos_soltar_cel** es de tipo *númerico*. Esto no es incorrecto, pero como solo tiene valores enteros ocupará menos RAM si la guardamos con tipo *entero*.
+
+```{r}
+raw_sleep_data <- raw_sleep_data %>% 
+                  mutate(minutos_soltar_cel = as.integer(minutos_soltar_cel))
+```
+
+## Limpiar datos 
+
+vamos a:
+
+1.  Revisar valores faltantes
+2.  Revisar la coherencia de los datos. En esta caso, vamos a verificar que no haya tiempos negativos para las variables **horas_sueno** y **minutos_soltar_cel.**
+
+### 1. Estadísticas descriptivas para revisar NA y coherencia 
+
+```{r}
+print(skim(raw_sleep_data))
+```
+
+#### 1.1 Remover missing values 
+
+A partir de las estadísticas descriptivas pudimos identificar que hay dos valores faltantes. Uno para la variable **horas_sueno** y otro para la variable **minutos_soltar_cel.** En este caso como tenemos pocas observaciones y tenemos planeado hacer una análisis descriptivo vamos a remover estos valores faltantes de la tabla de datos.
+
+```{r}
+raw_sleep_data <- na.omit(raw_sleep_data) #Remover NA
+nrow(raw_sleep_data) #Revisar que solo se hayan removida dos observaciones
+```
+
+#### 1.2 Revisar la coherencia de los datos 
+
+A partir de las estadísticas descriptivas pudimos identificar que no hay tiempos negativos para las variables **horas_sueno** y **minutos_soltar_cel.** Esto indica que nuestras variables no presentan incoherencias lógicas.
+
+## Guardar los datos limpios 
+
+```{r}
+saveRDS(raw_sleep_data, here("datos", "clean", "clean_sleep_data.rds"))
+```
