@@ -1,0 +1,23 @@
+
+Regresión simple: Horas de sueño vs. Uso del celular antes de dormir
+==========================================
+                     Dependent variable:  
+                    ----------------------
+                         horas_sueno      
+------------------------------------------
+minutos_soltar_cel          0.074         
+                          t = 33.016      
+                          p = 0.000       
+                                          
+Constant                    3.461         
+                          t = 37.962      
+                          p = 0.000       
+                                          
+------------------------------------------
+Observations                  28          
+R2                          0.977         
+Adjusted R2                 0.976         
+Residual Std. Error    0.208 (df = 26)    
+F Statistic         1,090.079 (df = 1; 26)
+==========================================
+Note:                                   NA
