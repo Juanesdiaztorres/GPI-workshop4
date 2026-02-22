@@ -12,11 +12,7 @@ editor_options:
 En este código vamos a simular datos sobre:
 
 -   Nombres de personas
-
-<!-- -->
-
 -   Horas de sueño
-
 -   Cuantos minutos antes de dormir las personas dejan de ver sus
     celulares
 
@@ -41,13 +37,14 @@ cat("\014")
 
 Para correr este chunk es necesario tener descargada la librería pacman
 
-```{r}
+```{r, echo=FALSE}
 
 library(pacman)
 
 p_load(
   tidyverse, #Análisis de datos
-  randomNames #Crear nombres aleatorios
+  randomNames, #Crear nombres aleatorios
+  here #Manejar rutas relativas
 ) 
 
 
@@ -135,9 +132,9 @@ Agregamos todas las variables simuladas para generar la tabla de datos
 
 ```{r}
 raw_sleep_data <- data.frame(
-  Nombres = nombres, 
-  Horas_sueno = hrs_sueno, 
-  Minutos_soltar_cel = min_soltar_cel
+  nombres = nombres, 
+  horas_sueno = hrs_sueno, 
+  minutos_soltar_cel = min_soltar_cel
 )
 
 ```
@@ -150,6 +147,5 @@ Estos datos simulados son los datos crudos de nuestros proyecto.
 necesario haber abierto el proyecto GPI-workshop4
 
 ```{r}
-saveRDS(raw_sleep_data, paste0("datos", "/", "raw", "/", "raw_sleep_data.rds"))
-
+saveRDS(raw_sleep_data, here("datos", "raw", "raw_sleep_data.rds"))
 ```
