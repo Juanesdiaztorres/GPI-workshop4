@@ -1,0 +1,44 @@
+flowchart LR
+    %% =========================
+    %% Stage 1: Data Input
+    %% =========================
+    subgraph S1["Stage 1: Data Input"]
+        direction LR
+        A("fa:fa-code Code")
+        B("fa:fa-database Simulate data")
+        C[("fa:fa-table Raw data")]
+    end
+
+    %% =========================
+    %% Stage 2: Data Processing
+    %% =========================
+    subgraph S2["Stage 2: Data Processing"]
+        direction LR
+        D("fa:fa-broom Data cleaning and processing")
+        E("fa:fa-code Code")
+    end
+
+    %% =========================
+    %% Stage 3: Data Analysis
+    %% =========================
+    subgraph S3["Stage 3: Data Analysis"]
+        direction LR
+        F("fa:fa-chart-line Data analysis")
+        G("fa:fa-code Analysis code")
+        H("fa:fa-file-alt Outputs")
+        I("fa:fa-code Output code")
+    end
+
+    %% =========================
+    %% Connections
+    %% =========================
+    A --> B --> C --> D --> E --> F --> G --> H --> I
+    E --> F
+
+    %% =========================
+    %% Styling (visual emphasis)
+    %% =========================
+    style A fill:#2962FF, stroke:#2962FF, color:#FFFFFF
+    style E fill:#00C853, stroke:#00C853, color:#FFFFFF
+    style G fill:#AA00FF, stroke:#AA00FF, color:#FFFFFF
+    style I fill:#FF6D00, stroke:#FF6D00, color:#FFFFFF
