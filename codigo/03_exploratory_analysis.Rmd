@@ -30,6 +30,8 @@ library("pacman")
 p_load(
   tidyverse, #Organización y limpieza
   skimr, #Estadísitcas descriptivas detalldas
+  stats, #Los usaremos para una regresión linel
+  stargazer, #Presentar mejor los resultados de la regresión
   here #Manejar rutas relativas
 )
 
@@ -78,6 +80,25 @@ ggsave(
   units = "in",
   dpi = 300
 )
+```
 
+### 2. Regresión lineal 
 
+Vamos a hacer una regresión lineal simple para ver la correlación entre nuestras variables de interés, donde:
+
+-   Variable dependiente (Y): Horas de sueño
+
+-    Variable independiente (X): Cuantos minutos antes de dormir se deja de ver el celular
+
+```{r}
+#Correr el modelo 
+model1 <- lm(horas_sueno ~  minutos_soltar_cel, data = clean_sleep_data)
+
+#Ver los resultados usando stargazer 
+stargazer(model1, 
+          type = "text", 
+          report = "vctp", #Rerportar estadístico t y el p-valor
+          star.cutoffs = NA, #No mostrar estrellas para el nivel de significacia
+          title = "Regresión simple: Horas de sueño vs. Uso del celular antes de dormir" ,
+          out = here("resultados", "model1_results.txt"))  #Guardar resultados en la carpeta de resutlados
 ```
