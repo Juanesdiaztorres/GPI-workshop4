@@ -4,9 +4,9 @@ flowchart LR
     %% =========================
     subgraph S1["Stage 1: Data Input"]
         direction LR
-        A("fa:fa-code Code")
+        A("fa:fa-code Code(01_simulate_data.Rmd)")
         B("fa:fa-database Simulate data")
-        C[("fa:fa-table Raw data")]
+        C[("fa:fa-table raw_sleep_data.rds")]
     end
 
     %% =========================
@@ -14,8 +14,11 @@ flowchart LR
     %% =========================
     subgraph S2["Stage 2: Data Processing"]
         direction LR
-        D("fa:fa-broom Data cleaning and processing")
-        E("fa:fa-code Code")
+        D("fa:fa-code Code
+            (02_processing_and_cleaning.Rmd)")
+        E("fa:fa-broom Data cleaning and processing")
+        F[("fa:fa-table clean_sleep_data.rds")]
+        
     end
 
     %% =========================
@@ -23,10 +26,10 @@ flowchart LR
     %% =========================
     subgraph S3["Stage 3: Data Analysis"]
         direction LR
-        F("fa:fa-chart-line Data analysis")
-        G("fa:fa-code Analysis code")
-        H("fa:fa-file-alt Outputs")
-        I("fa:fa-code Output code")
+        G("fa:fa-code Code 
+         (03_exploratory_analysis.Rmd)")
+        H("fa:fa-chart-line Data analysis")
+        I("fa:fa-file-alt Outputs")
     end
 
     %% =========================
@@ -39,6 +42,6 @@ flowchart LR
     %% Styling (visual emphasis)
     %% =========================
     style A fill:#2962FF, stroke:#2962FF, color:#FFFFFF
-    style E fill:#00C853, stroke:#00C853, color:#FFFFFF
+    style D fill:#00C853, stroke:#00C853, color:#FFFFFF
     style G fill:#AA00FF, stroke:#AA00FF, color:#FFFFFF
     style I fill:#FF6D00, stroke:#FF6D00, color:#FFFFFF
