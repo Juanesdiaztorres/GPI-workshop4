@@ -110,6 +110,6 @@ rsconnect/
 .ionide
 
 # Custom Project Ignores
-documentos/
+documento/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,r,macos
