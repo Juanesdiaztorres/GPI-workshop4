@@ -51,21 +51,20 @@ get_zenodo_data <- function(zenodo_id,
   message("Parsing metadata...")
   metadata <- fromJSON(file = metadata_file)
   
-  # Step 5: Extract file URLs from the metadata
-  file_list <- as.data.frame(metadata$files) %>% 
-    select(starts_with("self")) %>% 
-    tidyr::gather()
-  
-  if (nrow(file_list) == 0) {
+  # Step 5: Extract file info from metadata
+  if (length(metadata$files) == 0) {
     stop("No files found in the Zenodo repository")
   }
   
-  # Step 6: Prepare output file path
-  output_file <- file.path(output_dir, filename)
+  file_url  <- metadata$files[[1]]$links$self
+  file_name <- metadata$files[[1]]$key
   
-  # Step 7: Download the actual data file from Zenodo
+  # Step 6: Prepare output file path
+  output_file <- file.path(output_dir, file_name)
+  
+  # Step 7: Download the actual data file
   message("Downloading data file...")
-  download_status <- download.file(file_list$value[1], destfile = output_file)
+  download_status <- download.file(file_url, destfile = output_file)
   
   if (download_status != 0) {
     stop("Failed to download data file from Zenodo")
@@ -73,27 +72,15 @@ get_zenodo_data <- function(zenodo_id,
   
   # Step 8: Import the downloaded data
   message("Importing data...")
-  data <- import(output_file)
   
-  # Step 9: Clean column names for consistency
-  message("Cleaning data...")
-  data <- data %>% clean_names()
+  file_ext <- tools::file_ext(output_file)
+  
+  if (file_ext == "rds") {
+    data <- readRDS(output_file)
+  } else {
+    data <- import(output_file)
+  }
   
   # Return the cleaned data frame
   return(data)
-}
-
-# Example usage
-if (interactive()) {
-  # Define Zenodo repository information
-  ZENODO_ID <- "169207"  # ID of the specific Zenodo repository
-  
-  # Get the survey data
-  survey_data <- get_zenodo_data(
-    zenodo_id = ZENODO_ID,
-    filename = "encuesta.csv"
-  )
-  
-  # Display summary of the imported data
-  str(survey_data)
 }
