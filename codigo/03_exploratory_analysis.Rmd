@@ -36,7 +36,7 @@ p_load(
 
 ```
 
-### 3. Cargar funciones auxiliares 
+### 3. Cargar funciones auxiliares
 
 En este caso vamos a cargar la función get_zenodo_data.R para consultar los datos del proyecto desde la API de Zenodo
 
@@ -55,6 +55,7 @@ Para la entrega anterior simulamos los datos a partir de código *01_simulate_da
 #clean_sleep_data <- readRDS(here("datos", "clean", "clean_sleep_data.rds"))
 
 #Cargar datos desde Zenodo 
+clean_sleep_data <- get_zenodo_data(zenodo_id = 18843098)
 
 ```
 
