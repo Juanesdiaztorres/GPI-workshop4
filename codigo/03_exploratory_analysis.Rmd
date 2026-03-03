@@ -36,10 +36,26 @@ p_load(
 
 ```
 
-### 3. Cargar datos limpios
+### 3. Cargar funciones auxiliares 
+
+En este caso vamos a cargar la función get_zenodo_data.R para consultar los datos del proyecto desde la API de Zenodo
 
 ```{r}
-clean_sleep_data <- readRDS(here("datos", "clean", "clean_sleep_data.rds"))
+source(here("codigo", "helper_functions", "get_zenodo_data.R"))
+```
+
+### 4. Cargar datos limpios
+
+Para la entrega anterior simulamos los datos a partir de código *01_simulate_data* y los procesamos usando el código *02_processing_and_cleaning_data.* Para esta entrega vamos ha cargar los datos limpios, generados por los dos códigos ya mencionados consultando la API de Zenodo.
+
+> Para acceder a la publicación de los datos en Zenodo haga click [aquí](https://zenodo.org/records/18843098)
+
+```{r}
+# Linea de código que cargar los datos desde la carpeta data/clean después de que fueron simulados y procesados
+#clean_sleep_data <- readRDS(here("datos", "clean", "clean_sleep_data.rds"))
+
+#Cargar datos desde Zenodo 
+
 ```
 
 ## Análisis descriptivo
@@ -81,13 +97,13 @@ ggsave(
 )
 ```
 
-### 2. Regresión lineal 
+### 2. Regresión lineal
 
 Vamos a hacer una regresión lineal simple para ver la correlación entre nuestras variables de interés, donde:
 
 -   Variable dependiente (Y): Horas de sueño
 
--    Variable independiente (X): Cuantos minutos antes de dormir se deja de ver el celular
+-   Variable independiente (X): Cuantos minutos antes de dormir se deja de ver el celular
 
 ```{r}
 #Correr el modelo 
